@@ -116,26 +116,31 @@ SDL_Texture* get_text_texture2(SDL_Renderer*& renderer, char* text, TTF_Font* fo
 	SDL_FreeSurface(textSurface);
 	return texture;
 }
-SDL_Texture* get_text_texture3(SDL_Renderer*& renderer, char* text, TTF_Font* font) {
-	const char* text1 = "Tries:";
+SDL_Texture* get_text_texture3(SDL_Renderer*& renderer, const char* text, TTF_Font* font) {
 	SDL_Surface* textSurface = NULL;
 	SDL_Color fore_color = { 129,94, 66 };
-	textSurface = TTF_RenderUTF8_Blended(font, text1, fore_color);
+	textSurface = TTF_RenderUTF8_Blended(font, text, fore_color);
 	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, textSurface);
 	SDL_FreeSurface(textSurface);
 	return texture;
-}
-void draw_text4(SDL_Renderer*& renderer, SDL_Texture* texture)
-{
-	SDL_Rect rect = { 25,0, 50, 50 };
-	SDL_RenderCopy(renderer, texture, NULL, &rect);
 }
 void draw_text3(SDL_Renderer*& renderer, SDL_Texture* texture)
 {
 	SDL_Rect rect = { 75,0, 50, 50 };
 	SDL_RenderCopy(renderer, texture, NULL, &rect);
 }
+void draw_text4(SDL_Renderer*& renderer, SDL_Texture* texture)
+{
+	SDL_Rect rect = { 25,0, 50, 50 };
+	SDL_RenderCopy(renderer, texture, NULL, &rect);
+}
+void draw_text5(SDL_Renderer*& renderer, SDL_Texture* texture)
+{
+	SDL_Rect rect = { 360,0, 50, 50 };
+	SDL_RenderCopy(renderer, texture, NULL, &rect);
+}
 void task1( ){
+	SDL_Init(SDL_INIT_EVERYTHING);
 	SDL_Window* window = SDL_CreateWindow("Click the balls", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN);
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, 0);
 	SDL_Rect balls[BALL_COUNT];
@@ -165,10 +170,8 @@ void task1( ){
 	while (!quit)
 	{
 		while (SDL_PollEvent(&event)) {
-			if (event.type == SDL_QUIT)
-				quit = true;
-			if (event.type == SDL_MOUSEBUTTONDOWN &&
-				event.button.button == SDL_BUTTON_LEFT)
+			if (event.type == SDL_QUIT)	{ quit = true; }
+			if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT)
 			{
 				for (int i = 0; i < BALL_COUNT; i++)
 				{
@@ -205,6 +208,7 @@ void task1( ){
 	SDL_Quit();
 }
 void task2() {
+	SDL_Init(SDL_INIT_EVERYTHING);
 	SDL_Window* window = SDL_CreateWindow("Click the balls", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN);
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, 0);
 	SDL_Rect balls[BALL_COUNT];
@@ -277,6 +281,7 @@ void task2() {
 	SDL_Quit();
 }
 void task3() {
+	SDL_Init(SDL_INIT_EVERYTHING);
 	SDL_Window* window = SDL_CreateWindow("Click the balls", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN);
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, 0);
 	SDL_Rect mushrooms[MUSHROOM_COUNT];
@@ -308,15 +313,21 @@ void task3() {
 	SDL_Texture* korzinaTexture = SDL_CreateTextureFromSurface(renderer, korzinaImage);
 
 	TTF_Init();
+	const char* text1 = "Tries:";
+	const char* text2 = " ";
 	TTF_Font* my_font = TTF_OpenFont("text.ttf", 100);
 	SDL_Texture* textTexture;
 	SDL_Texture* textTexture2;
+	SDL_Texture* textTexture3;
 	int k = 0;
 	int tries = 3;
 	char text[30];
+	int k1=0;
 	_itoa_s(tries, text, 10);
 	textTexture = get_text_texture2(renderer, text, my_font);
-	textTexture2 = get_text_texture3(renderer, text, my_font);
+	textTexture2 = get_text_texture3(renderer, text1, my_font);
+	textTexture3 = get_text_texture3(renderer, text2, my_font);
+
 
 	Mix_Init(0);
 	Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 1024);
@@ -344,7 +355,11 @@ void task3() {
 						SDL_DestroyTexture(textTexture);
 						textTexture = get_text_texture2(renderer, text, my_font);
 						SDL_DestroyTexture(textTexture2);
-						textTexture2 = get_text_texture3(renderer, text, my_font);
+						textTexture2 = get_text_texture3(renderer, text1, my_font); 
+						SDL_DestroyTexture(textTexture3);
+						const char* text2 = "+5";
+						textTexture3 = get_text_texture3(renderer, text2, my_font);
+
 					}
 					if (is_ball_hit(myh[i], event.button.x, event.button.y))
 					{
@@ -356,7 +371,10 @@ void task3() {
 						SDL_DestroyTexture(textTexture);
 						textTexture = get_text_texture2(renderer, text, my_font);
 						SDL_DestroyTexture(textTexture2);
-						textTexture2 = get_text_texture3(renderer, text, my_font);
+						textTexture2 = get_text_texture3(renderer, text1, my_font);
+						SDL_DestroyTexture(textTexture3);
+						const char* text2 = "-5";
+						textTexture3 = get_text_texture3(renderer, text2, my_font);
 					}
 					if (is_ball_hit(klever[i], event.button.x, event.button.y))
 					{
@@ -367,7 +385,10 @@ void task3() {
 						SDL_DestroyTexture(textTexture);
 						textTexture = get_text_texture2(renderer, text, my_font);
 						SDL_DestroyTexture(textTexture2);
-						textTexture2 = get_text_texture3(renderer, text, my_font);
+						textTexture2 = get_text_texture3(renderer, text1, my_font);
+						SDL_DestroyTexture(textTexture3);
+						const char* text2 = " ";
+						textTexture3 = get_text_texture3(renderer, text2, my_font);
 					}
 					if (is_ball_hit(korzina[i], event.button.x, event.button.y))
 					{
@@ -379,7 +400,10 @@ void task3() {
 						SDL_DestroyTexture(textTexture);
 						textTexture = get_text_texture2(renderer, text, my_font);
 						SDL_DestroyTexture(textTexture2);
-						textTexture2 = get_text_texture3(renderer, text, my_font);
+						textTexture2 = get_text_texture3(renderer, text1, my_font);
+						SDL_DestroyTexture(textTexture3);
+						const char* text2 = "+10";
+						textTexture3 = get_text_texture3(renderer, text2, my_font);
 					}
 				}
 			}
@@ -393,8 +417,9 @@ void task3() {
 		draw_mushroom(renderer, korzina, 1, korzinaTexture);
 		draw_text3(renderer, textTexture);
 		draw_text4(renderer, textTexture2);
+		draw_text5(renderer, textTexture3);
 		SDL_RenderPresent(renderer);
-		if (tries == 0) { SDL_Delay(1000); quit = true; }
+		if (tries <= 0) { SDL_Delay(1000); quit = true; }
 	}
 	SDL_DestroyTexture(mushroomTexture);
 	SDL_FreeSurface(mushroomImage);
@@ -414,7 +439,6 @@ int main(int argc, char** argv)
 {
 	setlocale(LC_ALL, "Rus");
 	srand(time(NULL));
-	SDL_Init(SDL_INIT_EVERYTHING);
 	int t;
 	do {
 		printf("¬ведите номер задани€ (1,2,3) или ноль дл€ выхода: "); scanf_s("%d", &t);
