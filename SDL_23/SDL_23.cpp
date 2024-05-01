@@ -46,7 +46,8 @@ void init_balls2(SDL_Rect balls[], int count)
 		balls[i] = { 15,i * 100 + 105 ,50 + x,50 + x };
 	}
 }
-void draw_text_kryg(int k1, SDL_Renderer*& renderer, SDL_Rect balls[], TTF_Font* my_font) {
+void draw_text_kryg(int k1, SDL_Renderer*& renderer, SDL_Rect balls[], TTF_Font* my_font)
+{
 	char text1[10];
 	for (int i = 0; i < 5; i++) {
 		k1 = i + 1;
@@ -56,7 +57,8 @@ void draw_text_kryg(int k1, SDL_Renderer*& renderer, SDL_Rect balls[], TTF_Font*
 		SDL_RenderCopy(renderer, textTexture1, NULL, &rect);
 	}
 }
-void draw_balls(SDL_Renderer*& renderer, SDL_Rect balls[], int count, SDL_Texture* texture) {
+void draw_balls(SDL_Renderer*& renderer, SDL_Rect balls[], int count, SDL_Texture* texture) 
+{
 	for (int i = 0; i < count; i++)
 	{
 		if (balls[i].w == 0) continue;
@@ -81,7 +83,8 @@ void sound(char* name)
 	Sound = Mix_LoadWAV(name);
 	Mix_PlayChannel(-1, Sound, 0);
 }
-void draw_fon(SDL_Renderer*& renderer, SDL_Texture* texture) {
+void draw_fon(SDL_Renderer*& renderer, SDL_Texture* texture) 
+{
 	SDL_Rect rect = { 0,0,800,600 };
 	SDL_RenderCopy(renderer, texture, NULL, &rect);
 }
@@ -90,7 +93,23 @@ void init_mushrooms(SDL_Rect mushrooms[], int count)
 	for (int i = 0; i < count; i++)
 	{
 		int x = rand() % 550;
-		mushrooms[i] = { x + i * 50,i * 50 + 205 ,60, 60 };
+		mushrooms[i] = { x + i * 50 +10,i * 50 + 205 ,60, 60 };
+	}
+}
+void init_mushrooms2(SDL_Rect mushrooms[], int count)
+{
+	for (int i = 0; i < count; i++)
+	{
+		int x = rand() % 480;
+		mushrooms[i] = {20+ x + 5 * 50,5 * 50 + 215 ,60, 60 };
+	}
+}
+void init_mushrooms3(SDL_Rect mushrooms[], int count)
+{
+	for (int i = 0; i < count; i++)
+	{
+		int x = rand() % 300;
+		mushrooms[i] = { 20 + x + 5 * 50,5 * 50 + 255 ,60, 60 };
 	}
 }
 void init_korz(SDL_Rect mushrooms[], int count)
@@ -98,17 +117,19 @@ void init_korz(SDL_Rect mushrooms[], int count)
 	for (int i = 0; i < count; i++)
 	{
 		int x = rand() % 550;
-		mushrooms[i] = { x + i * 50,i * 50 + 205 ,100, 100 };
+		mushrooms[i] = { x + i * 50,i * 50 + 115 ,100, 100 };
 	}
 }
-void draw_mushroom(SDL_Renderer*& renderer, SDL_Rect mushrooms[], int count, SDL_Texture* texture) {
+void draw_mushroom(SDL_Renderer*& renderer, SDL_Rect mushrooms[], int count, SDL_Texture* texture) 
+{
 	for (int i = 0; i < count; i++)
 	{
 		if (mushrooms[i].w == 0) continue;
 		SDL_RenderCopy(renderer, texture, NULL, &mushrooms[i]);
 	}
 }
-SDL_Texture* get_text_texture2(SDL_Renderer*& renderer, char* text, TTF_Font* font) {
+SDL_Texture* get_text_texture2(SDL_Renderer*& renderer, char* text, TTF_Font* font)
+{
 	SDL_Surface* textSurface = NULL;
 	SDL_Color fore_color = { 129,94, 66 };
 	textSurface = TTF_RenderText_Blended(font, text, fore_color);
@@ -116,7 +137,8 @@ SDL_Texture* get_text_texture2(SDL_Renderer*& renderer, char* text, TTF_Font* fo
 	SDL_FreeSurface(textSurface);
 	return texture;
 }
-SDL_Texture* get_text_texture3(SDL_Renderer*& renderer, const char* text, TTF_Font* font) {
+SDL_Texture* get_text_texture3(SDL_Renderer*& renderer, const char* text, TTF_Font* font) 
+{
 	SDL_Surface* textSurface = NULL;
 	SDL_Color fore_color = { 129,94, 66 };
 	textSurface = TTF_RenderUTF8_Blended(font, text, fore_color);
@@ -137,6 +159,16 @@ void draw_text4(SDL_Renderer*& renderer, SDL_Texture* texture)
 void draw_text5(SDL_Renderer*& renderer, SDL_Texture* texture)
 {
 	SDL_Rect rect = { 360,0, 50, 50 };
+	SDL_RenderCopy(renderer, texture, NULL, &rect);
+}
+void draw_text6(SDL_Renderer*& renderer, SDL_Texture* texture)
+{
+	SDL_Rect rect = { 280,220, 170, 150 };
+	SDL_RenderCopy(renderer, texture, NULL, &rect);
+}
+void draw_text7(SDL_Renderer*& renderer, SDL_Texture* texture)
+{
+	SDL_Rect rect = { 475,220, 70, 150 };
 	SDL_RenderCopy(renderer, texture, NULL, &rect);
 }
 void task1( ){
@@ -289,9 +321,10 @@ void task3() {
 	SDL_Rect klever[1];
 	SDL_Rect korzina[1];
 	init_mushrooms(mushrooms, MUSHROOM_COUNT);
-	init_mushrooms(myh, 1);
-	init_mushrooms(klever, 1);
+	init_mushrooms2(myh, 1);
+	init_mushrooms3(klever, 1);
 	init_korz(korzina, 1);
+
 	SDL_Surface* fonImage = IMG_Load("polyana.bmp");
 	SDL_SetColorKey(fonImage, SDL_TRUE, SDL_MapRGB(fonImage->format, 255, 255, 255));
 	SDL_Texture* fonTexture = SDL_CreateTextureFromSurface(renderer, fonImage);
@@ -315,19 +348,26 @@ void task3() {
 	TTF_Init();
 	const char* text1 = "Tries:";
 	const char* text2 = " ";
+	const char* text3 = "Final   score:";
 	TTF_Font* my_font = TTF_OpenFont("text.ttf", 100);
+
 	SDL_Texture* textTexture;
 	SDL_Texture* textTexture2;
 	SDL_Texture* textTexture3;
+	SDL_Texture* textTexture4;
+	SDL_Texture* textTexture5;
+
 	int k = 0;
 	int tries = 3;
-	char text[30];
-	int k1=0;
+	char text[10];
+	char text4[10];
 	_itoa_s(tries, text, 10);
+
 	textTexture = get_text_texture2(renderer, text, my_font);
 	textTexture2 = get_text_texture3(renderer, text1, my_font);
 	textTexture3 = get_text_texture3(renderer, text2, my_font);
-
+	textTexture4 = get_text_texture3(renderer, text3, my_font);
+	textTexture5 = get_text_texture3(renderer, text4, my_font);
 
 	Mix_Init(0);
 	Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 1024);
@@ -351,15 +391,16 @@ void task3() {
 						mushrooms[i].w = mushrooms[i].h = 0;
 						k += 5;
 						tries -= 1;
+						const char* text2 = "+5";
 						_itoa_s(tries, text, 10);
 						SDL_DestroyTexture(textTexture);
 						textTexture = get_text_texture2(renderer, text, my_font);
 						SDL_DestroyTexture(textTexture2);
 						textTexture2 = get_text_texture3(renderer, text1, my_font); 
 						SDL_DestroyTexture(textTexture3);
-						const char* text2 = "+5";
 						textTexture3 = get_text_texture3(renderer, text2, my_font);
-
+				
+				
 					}
 					if (is_ball_hit(myh[i], event.button.x, event.button.y))
 					{
@@ -367,13 +408,13 @@ void task3() {
 						myh[i].w = myh[i].h = 0;
 						k -= 5;
 						tries -= 1;
+						const char* text2 = "-5";
 						_itoa_s(tries, text, 10);
 						SDL_DestroyTexture(textTexture);
 						textTexture = get_text_texture2(renderer, text, my_font);
 						SDL_DestroyTexture(textTexture2);
 						textTexture2 = get_text_texture3(renderer, text1, my_font);
 						SDL_DestroyTexture(textTexture3);
-						const char* text2 = "-5";
 						textTexture3 = get_text_texture3(renderer, text2, my_font);
 					}
 					if (is_ball_hit(klever[i], event.button.x, event.button.y))
@@ -381,13 +422,13 @@ void task3() {
 						sound(music);
 						klever[i].w = klever[i].h = 0;
 						tries += 3;
+						const char* text2 = " ";
 						_itoa_s(tries, text, 10);
 						SDL_DestroyTexture(textTexture);
 						textTexture = get_text_texture2(renderer, text, my_font);
 						SDL_DestroyTexture(textTexture2);
 						textTexture2 = get_text_texture3(renderer, text1, my_font);
 						SDL_DestroyTexture(textTexture3);
-						const char* text2 = " ";
 						textTexture3 = get_text_texture3(renderer, text2, my_font);
 					}
 					if (is_ball_hit(korzina[i], event.button.x, event.button.y))
@@ -396,16 +437,28 @@ void task3() {
 						korzina[i].w = korzina[i].h = 0;
 						k += 10;
 						tries -= 1;
+						const char* text2 = "+10";
 						_itoa_s(tries, text, 10);
 						SDL_DestroyTexture(textTexture);
 						textTexture = get_text_texture2(renderer, text, my_font);
 						SDL_DestroyTexture(textTexture2);
 						textTexture2 = get_text_texture3(renderer, text1, my_font);
 						SDL_DestroyTexture(textTexture3);
-						const char* text2 = "+10";
 						textTexture3 = get_text_texture3(renderer, text2, my_font);
 					}
 				}
+				SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+				SDL_RenderClear(renderer);
+				draw_fon(renderer, fonTexture);
+				draw_mushroom(renderer, mushrooms, MUSHROOM_COUNT, mushroomTexture);
+				draw_mushroom(renderer, myh, 1, myhTexture);
+				draw_mushroom(renderer, klever, 1, kleverTexture);
+				draw_mushroom(renderer, korzina, 1, korzinaTexture);
+				draw_text3(renderer, textTexture);
+				draw_text4(renderer, textTexture2);
+				draw_text5(renderer, textTexture3);
+				SDL_RenderPresent(renderer);
+				SDL_Delay(1000);
 			}
 		}
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
@@ -417,12 +470,23 @@ void task3() {
 		draw_mushroom(renderer, korzina, 1, korzinaTexture);
 		draw_text3(renderer, textTexture);
 		draw_text4(renderer, textTexture2);
-		draw_text5(renderer, textTexture3);
 		SDL_RenderPresent(renderer);
-		if (tries <= 0) { SDL_Delay(1000); quit = true; }
+		if (tries <= 0) { SDL_Delay(1000); quit = true; 
+		}
 	}
+	_itoa_s(k, text4, 10);
 	SDL_DestroyTexture(mushroomTexture);
 	SDL_FreeSurface(mushroomImage);
+	SDL_RenderClear(renderer);
+	draw_fon(renderer, fonTexture);
+	SDL_DestroyTexture(textTexture4);
+	textTexture4 = get_text_texture3(renderer, text3, my_font);
+	draw_text6(renderer, textTexture4);
+	SDL_DestroyTexture(textTexture5);
+	textTexture5 = get_text_texture3(renderer, text4, my_font);
+	draw_text7(renderer, textTexture5);
+	SDL_RenderPresent(renderer);
+	SDL_Delay(3000);
 	SDL_DestroyTexture(fonTexture);
 	SDL_FreeSurface(fonImage);
 	SDL_RenderPresent(renderer);
